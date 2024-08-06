@@ -1,0 +1,84 @@
+{% load static %}
+{% include "admin/header.html" %}
+<script src="{% static 'Admin/css/jquery-3.6.0.min.js' %}"></script>
+<br>
+<div class="page-body">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <br>
+                    <h3>Order Details</h3>
+                    <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                </div>
+                <div class="card-block">
+
+                      </div>
+
+
+                 <div class="col-12">
+                        <div class="bg-light rounded h-80 p-4">
+<!--                            <h6 class="mb-4">....</h6>-->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                     {% for c in customer %}
+        <tr><th>customer name</th><td>{{c.cust_id__tbl_customer__cust_name}}</td></tr>
+         <tr><th>email</th><td>{{c.cust_id__tbl_customer__cust_email}}</td></tr>
+         <tr><th>contactno</th><td>{{c.cust_id__tbl_customer__cust_contact}}</td></tr>
+         <tr><th>address</th><td>{{de_address.del_address}}</td></tr>
+        {% endfor %}
+
+                                           <th scope="col">Product image</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Product price</th>
+                                           <th scope="col">Purchased QTY</th>
+                                           <th scope="col">Total Amount</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for d in data %}
+                                    <tr>
+                                        <td><img src="/images/{{d.pro_id.pro_image}}" class='form-control' style="width:20;height:50px;"></td>
+                                        <td>{{d.pro_id.pro_name}}</td>
+                                        <td>{{d.pro_id.pro_price}}</td>
+                                        <td>{{d.item_qty}}</td>
+                                        <td>{% widthratio d.item_qty 1 d.pro_id.pro_price as total %}{{total}}</td>
+
+                                    {% endfor %}
+                                    <tr><th><td><td><td><b>Grand Total</b></th><td>{{grandtotal}}</td></td></td></tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if de_address.status == "Shipped" %}
+                            <h3>Status : Shipped</h3>
+                            {% else %}
+                            <form action="{% url 'sendmail' id=de_address.PaymentId %}" method="post">
+                                {% csrf_token %}
+<!--                                 <input type="hidden" name="cid" value="{{c.cust_id_tbl_customer_loginid}}">-->
+
+<!--                                <b>Arriving date</b><input type="date" name="sdate"><input type="submit" value="Send Mail"></form>-->
+                     <input type="submit" value="Change Status To Shipped" class="btn btn-primary"></form>
+                            {% endif %}
+<!--                            {% for c in customer %}-->
+
+<!--                            <form action="" method="post">-->
+<!--                                {% csrf_token %}-->
+<!--                                 <input type="hidden" name="cid" value="{{c.cust_id__tbl_customer__loginid}}">-->
+
+<!--                                <b>Arriving date</b><input type="date" name="sdate"><input type="submit" value="Send Mail"></form>-->
+<!--                            {% endfor %}-->
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+        <script>
+var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("sdate")[0].setAttribute('min', today);
+
+</script>
+        {% include "admin/footer.html" %}
+<!--   </div>-->

@@ -1,0 +1,25 @@
+{% include 'customer/header.html' %}
+{% load static %}
+<div class="container">
+<div class="row" >
+    <div class="col-6">
+ <table class="table table-striped">
+                   <thead>
+                   <tr>
+                       <th>Bill No.</th>
+                   </tr>
+                   </thead>
+                   <tbody >
+                   {% for b in book %}
+                   <tr><th><a href='{% url "billview" billno=b.billno %}'>Bill No {{b.billno}}</a></th></tr>
+                   {% endfor %}
+                   </tbody>
+       </table></div></div>
+<!-- End Column 1 -->
+
+
+
+
+       </div>
+{% include 'customer/footer.html' %}
+{% load static %}

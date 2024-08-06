@@ -1,0 +1,72 @@
+{%load static%}
+{% include "admin/header.html" %}
+
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 px-4" style="padding-top:500px;">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Category Registration</h6>
+                            <form method="POST" action="{% url 'category' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+<!--                                    <label for="exampleInputEmail1" class="form-label">Category name</label>-->
+                                    <input type="text" name="categoryname" placeholder="Category Name" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" required>
+                                    <div id="emailHelp" class="form-text">
+                                        {{error}}
+                                    </div>
+                                    <div class="col-12">
+
+                        <div class="bg-light rounded h-100 p-4">
+<!--                            <h6 class="mb-4">Ctegory image</h6>-->
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Category Image</label>
+                                <input class="form-control" name="categoryimage" type="file" id="formFile" required pattern=""
+                         title="please fill out of this feild">
+                            </div>
+
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary">Register</button>
+                            </form><br>
+                            <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Category Table</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">SL.NO</th>
+                                            <th scope="col">Category name</th>
+                                            <th scope="col">Category Image</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delate</th>
+<!--                                            <th scope="col">Country</th>-->
+<!--                                            <th scope="col">ZIP</th>-->
+<!--                                            <th scope="col">Status</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for d in category %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ d.cate_name }}</td>
+                                            <td><img src="/images/{{d.cate_image}}" class='form-control' style="width:100px;height:60px;"></td>
+                                            <td> <a href="{% url 'editcategory' id=d.cate_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                            <td> <a href="{% url 'deletecategory' id=d.cate_id %}"><i class="fa-solid fa-trash"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                         </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        </div>
+
+                    </div>
+
+                    {% include "admin/footer.html" %}
+                   </html>
+

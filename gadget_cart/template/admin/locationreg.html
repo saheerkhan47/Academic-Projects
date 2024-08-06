@@ -1,0 +1,111 @@
+{%load static%}
+{% include "admin/header.html" %}
+
+<script src="{% static 'Admin/css/jquery-3.6.0.min.js' %}"></script>
+<script>
+	$(document).ready(function()
+	{
+
+$.ajaxSetup({
+		headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		});
+		$("#dist_id").change(function()
+		{
+
+		var c=$(this).val();
+<!--		alert(c);-->
+		var i=1;
+		$.ajax({
+				type:"POST",
+				url : '{% url "filllocation" %}',
+				data : {did :c},
+				dataType:"json",
+				success : function(data)
+				{
+				$('#locid').empty();
+                    // Populate table with new data
+                    $.each(data,function(key,val) {
+                    var id=val.loc_id;
+
+                    var editUrl = '{% url "editlocation" 0 %}'.replace('0', id);
+                    var deleteUrl = '{% url "deletelocation" 0 %}'.replace('0', id);
+
+                    var row = "<tr><td></td><td>" + i++ + "</td><td>" + val.loc_name  + "</td>  <td><a href='"+editUrl+"'>Edit</a></td> <td><a href='"+deleteUrl+"'>Delete</a></td></tr>"
+					      $('#locid').append(row);
+                    });
+                 }
+                 });
+		});
+	});
+</script>
+
+
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 px-4" style="padding-top:500px;">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Location Registration</h6>
+                            <form method="POST" action="{% url 'location' %}">
+                                {% csrf_token %}
+
+                                 <select class="form-select mb-3" name="dist_id" id="floatingSelect">
+                                <option selected>Choose District</option>
+                                    <div class="form-floating mb-3">
+                                    {% for d in district %}
+                                        <option value="{{d.dist_id}}">{{d.dist_name}}</option>
+
+                                        {% endfor %}
+                                </select>
+                                <label for="floatingSelect"></label>
+                                     {{error}}
+                                    <div class="mb-3">
+<!--                                    <label for="exampleInputEmail1" class="form-la bel">Location name</label>-->
+                                    <input type="text" name="locationname" placeholder="Location Name" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" required>
+                                    <div id="emailHelp" class="form-text">
+                                        {{error}}
+                                    </div>
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                            </form><br>
+                            <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Location Table</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr><th >Select district <select name="dist_id" class="form-control" style="width:200px;" id="dist_id">
+                                            {% for d in district %}
+                                            {% if d.dist_id == row.dist_id %}
+                                            <option value="{{row.dist_id}}" selected>{{row.dist_name}}</option>
+                                            {% else %}
+                                            <option value="{{d.dist_id}}" >{{d.dist_name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                            </select></th>
+                                            <th scope="col">SL.NO</th>
+                                            <th scope="col">Location name</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="locid">
+                                    {% for d in loc %}
+
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ d.loc_name }}</td>
+                                            <td> <a href="{% url 'editlocation' id=d.loc_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                            <td> <a href="{% url 'deletelocation' id=d.loc_id %}"><i class="fa-solid fa-trash"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                    {% include "admin/footer.html" %}
+          </html>

@@ -1,0 +1,38 @@
+{% load static %}
+{% include "Admin/header.html" %}
+<br>
+<div class="page-body">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <br>
+                    <h3>Product Details</h3>
+                    <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                </div>
+                <div class="card-block">
+                    <form action="{% url 'export_excel' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group form-default">
+                            <input type="date" name="fdate" class="form-control" required>
+                            <span class="form-bar"></span>
+                        </div><br>
+                        <div class="form-group form-default">
+                            <input type="date" name="tdate" class="form-control" required>
+                            <span class="form-bar"></span>
+                        </div><br>
+                        <div class=" mb-3">
+                            <input type="submit" value="Export Excel">
+                        </div>
+                         </form>
+                        <br>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "admin/footer.html" %}
+
+

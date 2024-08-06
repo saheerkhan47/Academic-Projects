@@ -1,0 +1,13 @@
+{% load static %}
+{% include "admin/header.html" %}
+<br><br><br><br><br>
+<h2>Customer Details</h2>
+<form action="{% url 'export_cust' %}" method="post">
+        {% csrf_token %}
+          <div class=" mb-3">
+<input  class="btn btn-mini btn-danger"  type="submit" value="Export Excel">
+        </div>
+
+        </form>
+
+{% include "admin/footer.html" %}

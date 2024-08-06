@@ -1,0 +1,83 @@
+{% load static %}
+{% include "Admin/header.html" %}
+<br>
+<script src="{% static 'Admin/css/jquery-3.6.0.min.js' %}"></script>
+<script>
+	$(document).ready(function()
+	{
+$.ajaxSetup({
+		headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		});
+		$("#orderdate").change(function()
+		{
+
+		var c=$(this).val();
+		alert(c);
+		var i=1;
+		$.ajax({
+				type:"POST",
+				url : '{% url "fillbillno" %}',
+				data : {did :c},
+				dataType:"json",
+				success : function(data)
+				{
+				$('#billno').empty();
+                    // Populate table with new data
+                    $.each(data,function(key,val) {
+                    billno=val.billno;
+                    var billUrl = '{% url "billdetails" 0 %}'.replace('0', billno);
+                    var row = "<tr><td><a href='"+billUrl+"'>Bill No: "+val.billno+"</a></td><tr>";
+					      $('#billno').append(row);
+                    });
+                 }
+                 });
+		});
+	});
+</script>
+<div class="page-body">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <br>
+                    <h3>Order Details</h3>
+                    <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                </div>
+                <div class="card-block">
+                    <form method="POST" action="{% url 'orderdetails' %}" class="form-material">
+                        {% csrf_token %}
+                        <div class="form-group form-default">
+                            <input type="date" name="sdate" id="orderdate" class="form-control" required>
+                            <span class="form-bar"></span>
+                        </div>
+                        {{error}}<br>
+                        <br>
+                    </form>
+                      </div>
+                 <div class="col-12">
+                        <div class="bg-light rounded h-80 p-4">
+                            <h6 class="mb-4">.....</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+
+                                            <th scope="col">Billno</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="billno">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                <script>
+var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("sdate")[0].setAttribute('max', today);
+
+</script>
+                    {% include "admin/footer.html" %}
+<!--          </div>-->

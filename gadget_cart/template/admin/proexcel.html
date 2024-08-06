@@ -1,0 +1,27 @@
+{%load static%}
+{% include "admin/header.html" %}
+<div class="container-fluid pt-4 px-4" style="padding-top:500px;">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Categorywise Products Lists</h6>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+
+                                 <select class="form-select mb-3" name="cate_id" id="floatingSelect">
+                                <option selected>Select Category</option>
+                                    <div class="form-floating mb-3">
+                                    {% for d in category %}
+                                        <option value="{{d.cate_id}}">{{d.cate_id}}</option>
+
+                                        {% endfor %}
+                                </select>
+                                <button type="Download" name="submit" class="btn btn-primary">Download</button>
+
+                            </form><br>
+                            <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Product lists</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    {% include "admin/footer.html" %}

@@ -1,0 +1,58 @@
+{% load static %}
+{% include 'customer/header.html' %}
+
+<div class="span9">
+    <ul class="breadcrumb">
+        <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+        <li class="active">Check Out</li>
+    </ul>
+
+
+    <div class="well well-small">
+        <h1>Check Out <small class="pull-right"></small></h1>
+        <hr class="soften"/>
+        <form action="{% url 'placeorder' %}" method="post">
+            {% csrf_token %}
+            <table class="table table-bordered table-condensed">
+
+                <tr>
+
+                    <th>Total Amount</th>
+                    <td><b style="color:red;">$ {{grand_total}}</b></td>
+                </tr>
+
+                <tr>
+                    <th>Card No</th>
+                    <td><input type="number" name="cardno" minlength="16" maxlength="16" placeholder="CardNo" required></td>
+                </tr>
+                <tr>
+                    <th>Card Name</th>
+                    <td><input type="text" name="cardname"  placeholder="CardName" required></td>
+                </tr>
+                <tr>
+                    <th>CVV</th>
+                    <td><input type="number" name="cvv"  placeholder="CVV" minlength="3" maxlength="3" required></td>
+                    <td><input type="hidden" name="gtotal" value="{{grand_total}}"></td>
+
+                </tr>
+                <tr>
+                    <th>Delivery Address</th>
+                    <td><textarea class="form-control" name="Address" aria-label="With textarea" required>{{cdata.cust_address}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <button class="btn btn-mini btn-success"><span class="icon-remove"></span>Make Payment</button>
+                        </a>
+
+                </tr>
+
+            </table>
+            <br/>
+
+        </form>
+    </div>
+
+</div>
+{% include 'customer/footer.html' %}

@@ -1,0 +1,33 @@
+{%load static%}
+{% include "admin/header.html" %}
+
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 px-4" style="padding-top:500px;">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Edit Category </h6>
+                            <form method="POST" action="{% url 'editcategory' category.cate_id %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Category name</label>
+                                    <input type="text" name="categoryname" value="{{category.cate_name}}" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" required>
+                                    <div id="emailHelp" class="form-text">
+                                        {{error}}
+                                    </div>
+                                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+<!--                            <h6 class="mb-4">Ctegory image</h6>-->
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Category Image</label>
+                                <img src="/images/{{category.cate_image}}" class="rounded-circle" style="width:60;height:80px;">
+                                <input class="form-label" name="imagenew"  type="file" id="formFile">
+                                <input type="hidden" name="imageold" value="{{category.cate_image}}">
+                            </div>
+
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary">Register</button>
+                            </form>
+                        </div>
+                    </div>

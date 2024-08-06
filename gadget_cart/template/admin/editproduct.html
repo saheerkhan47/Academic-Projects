@@ -1,0 +1,58 @@
+{%load static%}
+{% include "admin/header.html" %}
+
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 px-4" style="padding-top:500px;">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Edit product</h6>
+                            <form method="POST" action="{% url 'editproduct' product.pro_id %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="form-label">Category name</label>
+                                    <select name="cate_id" class="form-control" style="width:200px;" id="dist_id">
+                                            {% for d in category %}
+                                            {% if d.cate_id == category.cate_id.cate_id %}
+                                            <option value="{{d.cate_id}}" selected>{{d.cate_name}}</option>
+                                            {% else %}
+                                            <option value="{{d.cate_id}}" >{{d.cate_name}}</option>
+                                            {% endif %}
+                                            {% endfor %}</select><br>
+                                    <label class="form-label">Product name</label>
+                                    <input type="text" name="productname" value="{{product.pro_name}}" class="form-control" ><br>
+<!--                                <label for="floatingSelect"></label>-->
+<!--                                     {{error}}-->
+                                    </div><br>
+
+                                    <div class="row mb-3">
+                                    <label  class="col-sm-2 col-form-label">Product Price</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="productprice" value="{{product.pro_price}}" placeholder="price" class="form-control">
+                                    </div>
+                                    </div>
+
+                                         <div class="row mb-3">
+                                    <label  class="col-sm-2 col-form-label">Product Stoke</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="productstoke" value="{{product.pro_stoke}}" placeholder="stoke" class="form-control">
+                                    </div>
+
+                                    <div class="col-12">
+
+                        <div class="bg-light rounded h-100 p-4">
+<!--                            <h6 class="mb-4">Ctegory image</h6>-->
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Category Image</label>
+                                <img src="/images/{{product.pro_image}}" class="rounded-circle" style="width:60;height:80px;">
+                                <input class="form-label" name="imagenew"  type="file" id="formFile">
+                                <input type="hidden" name="imageold" value="{{product.pro_image}}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text">Description</span>
+                                <textarea class="form-control" name="description" aria-label="With textarea">{{ product.pro_des}}</textarea>
+                            </div><br>
+                                <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </div>
+                    </div>

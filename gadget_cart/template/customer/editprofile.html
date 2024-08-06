@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+   $(document).ready(function()
+   {
+$.ajaxSetup({
+      headers : {"X-CSRFToken" : '{{csrf_token}}'}
+      });
+      $("#district").change(function()
+      {
+
+      var c=$(this).val();
+      alert(c);
+      var i=1;
+      $.ajax({
+            type:"POST",
+            url : '{% url "filllocation" %}',
+            data : {did :c},
+            dataType:"json",
+            success : function(data)
+            {
+            $('#location').empty();
+                    // Populate table with new data
+                    $.each(data,function(key,val) {
+                    var row = "<option value='"+val.loc_id+"'>" + val.loc_name + "</option>";
+                     $('#location').append(row);
+
+
+                    });
+                 }
+                 });
+      });
+   });
+</script>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <section class="h-100 h-custom gradient-custom-2">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="{% static 'newcust/css/flregdesign.css' %}">
+</head>
+<body>
+</body>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<div class="container register">
+                <div class="row">
+                    <div class="col-md-3 register-left">
+                        <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+                        <h3>Welcome</h3>
+                        <p>To Gizmowagon</p>
+                        <a href="{% url 'cindex' %}">
+                        <input type="submit" name="" value="Home"/><br/>
+                    </div>
+                    <div class="col-md-9 register-right">
+                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="" role="tab" aria-controls="home" aria-selected="true">Customer</a>
+                            </li>
+<!--                            <li class="nav-item">-->
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <h3  class="register-heading">Edit Customer Profile</h3>
+                                <div class="row register-form">
+                                    <div class="col-md-6">
+                                        <form action="{% url 'editprofile' %}" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Name *" name="customername" value="{{customer.cust_name}}" required />
+                                        </div>
+<!--                                        <div class="form-group">-->
+<!--                                            <input type="text" class="form-control" placeholder="House Name*" name="house" required/>-->
+<!--                                        </div>-->
+                                            <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Your Email *" name="email" value="{{customer.cust_email}}"  pattern=" /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;"
+                                            title="must enter a valid email address" required>
+                                           </td>
+                                        <required/>
+                                        </div>
+                                            <div class="form-group">
+                                            <input type="text" minlength="10" maxlength="10" class="form-control" placeholder="Your Phone *" name="contact" value="{{customer.cust_contact}}" required />
+                                        </div>
+
+
+                                       <div class="form-group">
+                                                <select class="form-control" name="district" id="district" required>
+                                                <option>--------Select District-----------</option>
+                                                     {% for d in district %}
+                                                    {% if d.dist_id == customer.loc_id.dist_id.dist_id %}
+                                             <option value="{{d.dist_id}}" selected>{{d.dist_name}}</option>
+                                                    {% else %}
+                                              <option value="{{d.dist_id}}">{{d.dist_name}}</option>
+                                                     {% endif %}
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group"><br>
+
+<!--                                            <input type="text" class="form-control"  placeholder="username *" name="username" id="username" required />-->
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="maxl">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                     <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Your Address *" name="address" value="{{customer.cust_address}}" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" minlength="6" maxlength="6" class="form-control" placeholder="Pincode *" name="pincode" value="{{customer.cust_pincode}}" required/>
+                                        </div>
+<!--                                        <input type="radio" name="gender" value="male"> Male-->
+<!--                                       <input type="radio" name="gender" value="female"> Female<br><br>-->
+
+                                      <select name="location" id="location" class="form-control" required>
+                                          {% for d in location  %}
+                                      {% if d.loc_id == customer.loc_id.loc_id%}
+                                     <option value="{{d.loc_id}}" selected>{{d.loc_name}}</option>
+                                     {% else %}
+                                    <option value="{{d.loc_id}}">{{d.loc_name}}</option>
+                                       {% endif %}
+                                          {% endfor %}
+                                      </select>
+                             <div class="form-group"><br><br>
+
+<!--                                <input type="password" class="form-control" placeholder="password *" name="password" id="password" required/>-->
+                            </div>
+                                        <input type="submit" class="btnRegister"  value="Update"/>
+                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- End of customer -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </body>
+</html>
+
+
